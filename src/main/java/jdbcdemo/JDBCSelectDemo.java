@@ -27,9 +27,9 @@ public class JDBCSelectDemo {
                     while (resultSet.next()){
                         int customerId = resultSet.getInt("customer_id");
                         String firstName = resultSet.getString("first_name");
-                        String lastName = resultSet.getString("first_name");
-                        String email = resultSet.getString("first_name");
-                        String password = resultSet.getString("first_name");
+                        String lastName = resultSet.getString("last_name");
+                        String email = resultSet.getString("email");
+                        String password = resultSet.getString("password");
                         LocalDate dateOfBirth = resultSet.getDate("date_of_birth").toLocalDate();
                         boolean active = resultSet.getBoolean("active");
                         Customer customer = new Customer(customerId, firstName, lastName, email, password, dateOfBirth, active);
