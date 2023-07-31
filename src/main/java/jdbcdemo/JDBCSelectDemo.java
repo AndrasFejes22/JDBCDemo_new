@@ -30,7 +30,6 @@ public class JDBCSelectDemo {
                         String lastName = resultSet.getString("first_name");
                         String email = resultSet.getString("first_name");
                         String password = resultSet.getString("first_name");
-                        // nincs resultSet.getLocalDade!
                         LocalDate dateOfBirth = resultSet.getDate("date_of_birth").toLocalDate();
                         boolean active = resultSet.getBoolean("active");
                         Customer customer = new Customer(customerId, firstName, lastName, email, password, dateOfBirth, active);
