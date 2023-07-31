@@ -1,12 +1,11 @@
 package jdbcdemo;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
-public class JDBC_SQLInjectionDemo {
+public class JDBC_SQLInjectionPreventionDemo {
     public static void main(String[] args) throws SQLException {
         // User interaction:
         try (Scanner scanner = new Scanner(System.in)) {
@@ -25,17 +24,23 @@ public class JDBC_SQLInjectionDemo {
 
             // 1. Connection object:
             try (Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5433/webshop", "postgres", "admin")) {
-                //String sql = "SELECT * FROM public.customer";
-                // String manipulation + statement: SQL injection danger!
+
+                // String manipulation + statement: SQL injection danger! --> Solving: PreparedStatement
                 String sql = """
                         INSERT INTO public.customer(
                         	customer_id, first_name, last_name, email, password, date_of_birth, active)
-                        	VALUES (nextval('customer_seq'), '%s', '%s', '%s', '%s', '%s', true);
-                        """.formatted(firstName, lastName, email, password, dateOfBirth);
-                // 2. Statement object
-                try (Statement statement = connection.createStatement()) {
-                    // 3. execute query
-                    statement.executeUpdate(sql);
+                        	VALUES (nextval('customer_seq'), ?, ?, ?, ?, ?, true);
+                        """;
+                // 2. PreparedStatement object
+                try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                    // 3. parameters
+                    preparedStatement.setString(1, firstName);
+                    preparedStatement.setString(2, lastName);
+                    preparedStatement.setString(3, email);
+                    preparedStatement.setString(4, password);
+                    preparedStatement.setDate(5, Date.valueOf(LocalDate.parse(dateOfBirth, DateTimeFormatter.ofPattern("yyyy-MM-dd"))));
+                    // 4. execute query
+                    preparedStatement.executeUpdate();
                 }
 
             }
