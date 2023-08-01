@@ -1,5 +1,8 @@
 package jdbcdemo.initdb;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -25,8 +28,11 @@ public class InitDb {
         } catch (SQLException e) {
             System.out.println("Error while uploading the database!");
             e.printStackTrace();
+        } catch (IOException e) {
+            System.out.println("Error while opening file!");
+            e.printStackTrace();
         }
-        System.out.println("A program lefutott.");
+        System.out.println("The programme has been run.");
     }
 
     private void truncateTablesIfNecessary(Connection connection) throws SQLException {
@@ -39,8 +45,10 @@ public class InitDb {
         }
     }
 
-    private void populateCustomerTable(Connection connection, int amount){
+    private void populateCustomerTable(Connection connection, int amount) throws IOException {
         // datas from txt
+        // amegadott file-nak a sorait adja vissza String-ként:
+        Files.lines(Paths.get("resources.vezeteknevek.txt")).forEach(System.out::println);
         // create Customer objects
         // populate the database
     }
