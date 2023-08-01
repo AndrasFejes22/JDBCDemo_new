@@ -1,0 +1,90 @@
+Nándor utca 2.
+Károlyi utca 62.
+Piarista utca 68.
+Széchenyi István tér 83.
+Bauer Sándor utca 33.
+II. János Pál pápa tér 84.
+Kis Salétrom utca 95.
+Kis Stáció utca 90.
+II. János Pál pápa tér 94.
+Tbiliszi tér 89.
+Bartoniek Géza lépcső 100.
+Bibó István park 11.
+Emelkedő utca 39.
+Gyóni Géza tér 95.
+Kond vezér utca 6.
+Széll Kálmán tér 4.
+Széll Kálmán tér 62.
+Bibó István park 37.
+Emelkedő utca 7.
+Gyóni Géza tér 41.
+Kond vezér utca 16.
+Széll Kálmán tér 61.
+Korona tér 79.
+Kocsis Sándor út 55.
+Domján Edit utca 28.
+Hidegkuti Nándor utca 79.
+Sinkovits Imre utca 44.
+Németh László utca 52.
+Bauer Sándor utca 50.
+II. János Pál pápa tér 75.
+Kis Salétrom utca 10.
+Kis Stáció utca 42.
+II. János Pál pápa tér 70.
+Tbiliszi tér 42.
+Carl Lutz rakpart 52.
+Wass Albert tér 77.
+Vajdahunyadvár  5.
+Csősztorony utca 45.
+Korona tér 76.
+Kocsis Sándor út 93.
+Domján Edit utca 47.
+Hidegkuti Nándor utca 49.
+Sinkovits Imre utca 28.
+Carl Lutz rakpart 39.
+Baksay Sándor utca 53.
+Báthory utca 19.
+Bezerédj Pál utca 67.
+Wysocki utca 49.
+Dalnoki Jenő utca 35.
+Kert köz 47.
+Kis Rákos utca 31.
+Lóvasút köz 5.
+Páskom park 16.
+Régi Fóti út 65.
+Sín utca 57.
+Szent Korona útja 23.
+Illyés Gyula utca 91.
+Toldi sor 14.
+Wass Albert tér 19.
+Vajdahunyadvár  7.
+Tabódy Ida tér 5.
+Csömöri út 63.
+Regele János utca 5.
+Levedi utca 52.
+Krenedits Sándor utca 37.
+Csősztorony utca 43.
+Kósa Pál tér 56.
+Nagyszentmiklósi út 85.
+Kiss István utca 80.
+Szurmay tábornok utca 53.
+Orbán Balázs utca 12.
+Borics Pál utca 33.
+Cziffra György utca 14.
+Görgey Artúr tér 1.
+Mansfeld Péter utca 24.
+Kőrösi Sándor utca 37.
+Dr. Koncz János tér 26.
+Vermes Miklós utca 53.
+Magasházy utca 63.
+Popieluszko utca 63.
+Károli Gáspár utca 49.
+Forster János Jakab utca 20.
+Bartoniek Géza lépcső 100.
+Zakariás József utca 94.
+Fáy Ferenc utca 86.
+Romhányi József utca 18.
+Szent Flórián utca 27.
+Obulus köz 51.
+Rudnyánszky utca 38.
+Simándy József utca 50.
