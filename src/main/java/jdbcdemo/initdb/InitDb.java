@@ -19,6 +19,7 @@ public class InitDb {
     private void run() {
         try (Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5433/webshop", "postgres", "admin")) {
             truncateTablesIfNecessary(connection);
+            populateCustomerTable(connection, 20);
         } catch (SQLException e) {
             System.out.println("Error while uploading the database!");
             e.printStackTrace();
@@ -34,5 +35,9 @@ public class InitDb {
                 truncateStatement.executeUpdate("TRUNCATE table orders CASCADE"); //public.order
             }
         }
+    }
+
+    private void populateCustomerTable(Connection connection, int amount){
+
     }
 }
