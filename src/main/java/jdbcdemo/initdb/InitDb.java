@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Random;
 
 /**
  * Write a Java program that randomly fills the tables of the "webshop" database with sample data.
@@ -12,6 +13,7 @@ import java.sql.Statement;
 public class InitDb {
 
     private final boolean TRUNCATE_TABLES = false;
+    private final Random random = new Random(8735432L);
     public static void main(String[] args) {
         new InitDb().run();
     }
@@ -38,6 +40,8 @@ public class InitDb {
     }
 
     private void populateCustomerTable(Connection connection, int amount){
-
+        // datas from txt
+        // create Customer objects
+        // populate the database
     }
 }

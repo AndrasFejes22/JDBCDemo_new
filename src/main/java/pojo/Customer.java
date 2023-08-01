@@ -12,8 +12,9 @@ public class Customer {
     private final String password;
     private final LocalDate dateOfBirth;
     private final boolean active;
+    private final String address;
 
-    public Customer(int id, String firstName, String lastName, String email, String password, LocalDate dateOfBirth, boolean active) {
+    public Customer(int id, String firstName, String lastName, String email, String password, LocalDate dateOfBirth, boolean active, String address) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -21,6 +22,7 @@ public class Customer {
         this.password = password;
         this.dateOfBirth = dateOfBirth;
         this.active = active;
+        this.address = address;
     }
 
     public int getId() {
@@ -51,17 +53,21 @@ public class Customer {
         return active;
     }
 
+    public String getAddress() {
+        return address;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Customer customer = (Customer) o;
-        return id == customer.id && active == customer.active && Objects.equals(firstName, customer.firstName) && Objects.equals(lastName, customer.lastName) && Objects.equals(email, customer.email) && Objects.equals(password, customer.password) && Objects.equals(dateOfBirth, customer.dateOfBirth);
+        return id == customer.id && active == customer.active && Objects.equals(firstName, customer.firstName) && Objects.equals(lastName, customer.lastName) && Objects.equals(email, customer.email) && Objects.equals(password, customer.password) && Objects.equals(dateOfBirth, customer.dateOfBirth) && Objects.equals(address, customer.address);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, firstName, lastName, email, password, dateOfBirth, active);
+        return Objects.hash(id, firstName, lastName, email, password, dateOfBirth, active, address);
     }
 
     @Override
@@ -74,6 +80,7 @@ public class Customer {
                 ", password='" + password + '\'' +
                 ", dateOfBirth=" + dateOfBirth +
                 ", active=" + active +
+                ", address='" + address + '\'' +
                 '}';
     }
 }

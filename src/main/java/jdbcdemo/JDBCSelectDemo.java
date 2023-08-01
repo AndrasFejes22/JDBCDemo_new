@@ -11,12 +11,12 @@ public class JDBCSelectDemo {
 
             // SELECT
             String sql = """
-                    SELECT customer_id, first_name, last_name, email, password, date_of_birth, active
+                    SELECT customer_id, first_name, last_name, email, password, date_of_birth, active, address
                     	FROM public.customer;
                     """;
 
             String sqlWhere = """
-                    SELECT customer_id, first_name, last_name, email, password, date_of_birth, active
+                    SELECT customer_id, first_name, last_name, email, password, date_of_birth, active, address
                     	FROM public.customer WHERE customer_id = 2;
                     """;
 
@@ -32,7 +32,8 @@ public class JDBCSelectDemo {
                         String password = resultSet.getString("password");
                         LocalDate dateOfBirth = resultSet.getDate("date_of_birth").toLocalDate();
                         boolean active = resultSet.getBoolean("active");
-                        Customer customer = new Customer(customerId, firstName, lastName, email, password, dateOfBirth, active);
+                        String address = resultSet.getString("address");
+                        Customer customer = new Customer(customerId, firstName, lastName, email, password, dateOfBirth, active, address);
                         //System.out.println();
                         System.out.println(customer);
                     }
