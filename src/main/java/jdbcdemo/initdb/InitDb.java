@@ -10,6 +10,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -72,7 +73,7 @@ public class InitDb {
             String lastName = getRandomFrom(lastNames);
             String email = firstName.toLowerCase() + "." + lastName.toLowerCase() + "@gmail.com";
             String password = "abc123"; // passwordGenerator();
-            LocalDate dateOfBirth = LocalDate.now(); // dateOfBirthGenerator();
+            LocalDate dateOfBirth = dateOfBirthGenerator();
             boolean active = random.nextBoolean();
             String address = getRandomFrom(cities) + " "
                     + (random.nextInt(9000) + 1000) + " "
@@ -93,5 +94,23 @@ public class InitDb {
 
     private String getRandomFrom(List<String> list){
         return list.get(random.nextInt(list.size()));
+    }
+
+    public static LocalDate dateOfBirthGenerator(){
+        Random myRandom = new Random();
+        String nullNumber = "0";
+        int year = myRandom.nextInt(1900, LocalDate.now().getYear()-18);
+        int month = myRandom.nextInt(12) + 1;
+        String monthString = String.valueOf(month);
+        if(monthString.length() == 1){
+            monthString = nullNumber.concat(monthString);
+        }
+        int day = myRandom.nextInt(28) + 1;
+        String dayString = String.valueOf(day);
+        if(dayString.length() == 1){
+            dayString = nullNumber.concat(dayString);
+        }
+        String date = String.valueOf(year) + "-" + String.valueOf(monthString) + "-" + String.valueOf(dayString);
+        return LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
     }
 }

@@ -1,5 +1,7 @@
 package jdbcdemo.initdb;
 
+import org.junit.jupiter.api.Test;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class InitDbTest {
 
-    @org.junit.jupiter.api.Test
+    @Test
     void mergeTwoListTest() {
         List<String> list1 = new ArrayList<>();
         list1.add("1");
@@ -28,5 +30,10 @@ class InitDbTest {
         list3.add("6");
 
         assertEquals(list3, InitDb.mergeTwoList(list2, list1));
+    }
+
+    @Test
+    void dateOfBirthGeneratorTest() {
+        System.out.println(InitDb.dateOfBirthGenerator());
     }
 }
