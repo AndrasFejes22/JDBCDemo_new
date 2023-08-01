@@ -7,7 +7,9 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
 import java.util.Random;
+import java.util.stream.Stream;
 
 /**
  * Write a Java program that randomly fills the tables of the "webshop" database with sample data.
@@ -47,9 +49,15 @@ public class InitDb {
 
     private void populateCustomerTable(Connection connection, int amount) throws IOException {
         // datas from txt
-        // amegadott file-nak a sorait adja vissza String-ként:
-        Files.lines(Paths.get("resources.vezeteknevek.txt")).forEach(System.out::println);
+        // amegadott file-nak a sorait adja vissza String-kï¿½nt:
+        //Files.lines(Paths.get("src/main/resources/vezeteknevek.txt")).forEach(System.out::println);
+        List<String> lastNames = Files.lines(Paths.get("src/main/resources/vezeteknevek.txt")).toList();
+        List<String> firstNames = Files.lines(Paths.get("src/main/resources/keresztnevek.txt")).toList();
         // create Customer objects
         // populate the database
+    }
+
+    public static List<String> mergeTwoList(List<String> list1, List<String> list2){
+        return Stream.of(list1, list2).flatMap(l -> l.stream()).toList();
     }
 }
