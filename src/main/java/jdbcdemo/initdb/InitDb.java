@@ -1,5 +1,7 @@
 package jdbcdemo.initdb;
 
+import pojo.Customer;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -7,6 +9,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Stream;
@@ -14,6 +18,9 @@ import java.util.stream.Stream;
 /**
  * Write a Java program that randomly fills the tables of the "webshop" database with sample data.
  * The program should be parameterizable (e.g. how many records are inserted into which table.)
+ * TODO
+ * passwordGenerator();
+ * dateOfBirthGenerator();
  */
 public class InitDb {
 
@@ -49,15 +56,42 @@ public class InitDb {
 
     private void populateCustomerTable(Connection connection, int amount) throws IOException {
         // datas from txt
-        // amegadott file-nak a sorait adja vissza String-k�nt:
+        // amegadott file-nak a sorait adja vissza String-kent:
         //Files.lines(Paths.get("src/main/resources/vezeteknevek.txt")).forEach(System.out::println);
+
         List<String> lastNames = Files.lines(Paths.get("src/main/resources/vezeteknevek.txt")).toList();
         List<String> firstNames = Files.lines(Paths.get("src/main/resources/keresztnevek.txt")).toList();
+        List<String> cities = Files.lines(Paths.get("src/main/resources/varosok.txt")).toList();
+        List<String> streetTypes = Files.lines(Paths.get("src/main/resources/utcanevek.txt")).toList();
+        List<String> namesOfFamousPeople = Files.lines(Paths.get("src/main/resources/hires_emberek.txt")).toList();
+
         // create Customer objects
+        List<Customer> customerList = new ArrayList<>();
+        for (int i = 0; i < amount; i++) {
+            String firstName = getRandomFrom(firstNames);
+            String lastName = getRandomFrom(lastNames);
+            String email = firstName.toLowerCase() + "." + lastName.toLowerCase() + "@gmail.com";
+            String password = "abc123"; // passwordGenerator();
+            LocalDate dateOfBirth = LocalDate.now(); // dateOfBirthGenerator();
+            boolean active = random.nextBoolean();
+            String address = getRandomFrom(cities) + " "
+                    + (random.nextInt(9000) + 1000) + " "
+                    + getRandomFrom(namesOfFamousPeople) + " "
+                    + getRandomFrom(streetTypes) + " "
+                    + (random.nextInt((100) + 1)) + ".";
+            Customer customer = new Customer(0, lastName, firstName, email, password, dateOfBirth, active, address);
+            customerList.add(customer);
+        }
+        System.out.println("Customers list: ");
+        customerList.forEach(System.out::println);
         // populate the database
     }
 
     public static List<String> mergeTwoList(List<String> list1, List<String> list2){
         return Stream.of(list1, list2).flatMap(l -> l.stream()).toList();
+    }
+
+    private String getRandomFrom(List<String> list){
+        return list.get(random.nextInt(list.size()));
     }
 }
