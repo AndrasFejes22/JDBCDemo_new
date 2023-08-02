@@ -5,10 +5,7 @@ import pojo.Customer;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -21,7 +18,7 @@ import java.util.stream.Stream;
  * The program should be parameterizable (e.g. how many records are inserted into which table.)
  * TODO
  * passwordGenerator();
- * dateOfBirthGenerator();
+ * proper e-mail addresses
  */
 public class InitDb {
 
@@ -55,7 +52,7 @@ public class InitDb {
         }
     }
 
-    private void populateCustomerTable(Connection connection, int amount) throws IOException {
+    private void populateCustomerTable(Connection connection, int amount) throws IOException, SQLException {
         // datas from txt
         // amegadott file-nak a sorait adja vissza String-kent:
         //Files.lines(Paths.get("src/main/resources/vezeteknevek.txt")).forEach(System.out::println);
@@ -84,8 +81,27 @@ public class InitDb {
             customerList.add(customer);
         }
         System.out.println("Customers list: ");
-        customerList.forEach(System.out::println);
+        //customerList.forEach(System.out::println);
         // populate the database
+        // INSERT sql:
+        String sql = """
+                        INSERT INTO public.customer(
+                        	customer_id, first_name, last_name, email, password, date_of_birth, active, address)
+                        	VALUES (nextval('customer_seq'), ?, ?, ?, ?, ?, ?, ?);
+                        """;
+
+        try(PreparedStatement preparedStatement = connection.prepareStatement(sql)){
+            for (Customer customer : customerList) {
+                preparedStatement.setString(1, customer.getFirstName());
+                preparedStatement.setString(2, customer.getLastName());
+                preparedStatement.setString(3, customer.getEmail());
+                preparedStatement.setString(4, customer.getPassword());
+                preparedStatement.setDate(5, Date.valueOf(customer.getDateOfBirth()));
+                preparedStatement.setBoolean(6, customer.isActive());
+                preparedStatement.setString(7, customer.getAddress());
+                preparedStatement.executeUpdate();
+            }
+        }
     }
 
     public static List<String> mergeTwoList(List<String> list1, List<String> list2){
