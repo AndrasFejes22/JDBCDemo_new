@@ -7,11 +7,10 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.*;
+import java.sql.Date;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.stream.Stream;
 
 
@@ -26,7 +25,7 @@ import java.util.stream.Stream;
 public class InitDb {
 
     private final boolean TRUNCATE_TABLES = true;
-    private final Random random = new Random(8735432L);
+    private final static Random random = new Random(8735432L);
     public static void main(String[] args) {
         new InitDb().run();
     }
@@ -79,7 +78,7 @@ public class InitDb {
             String firstName = getRandomFrom(firstNames);
             String lastName = getRandomFrom(lastNames);
             String email = removeAccentsWithApacheCommons(firstName.toLowerCase()) + "." + removeAccentsWithApacheCommons(lastName.toLowerCase()) + "@gmail.com";
-            String password = "abc123"; // passwordGenerator();
+            String password = passwordGenerator();
             LocalDate dateOfBirth = dateOfBirthGenerator();
             boolean active = random.nextBoolean();
             String address = getRandomFrom(cities) + " "
@@ -118,8 +117,13 @@ public class InitDb {
         return Stream.of(list1, list2).flatMap(l -> l.stream()).toList();
     }
 
-    private String getRandomFrom(List<String> list){
+    public static String getRandomFrom(List<String> list){
         return list.get(random.nextInt(list.size()));
+    }
+
+    public static String getRandomFromList(List<String> list){
+        Random randomNumber = new Random();
+        return list.get(randomNumber.nextInt(list.size()));
     }
 
     public static LocalDate dateOfBirthGenerator(){
@@ -145,12 +149,31 @@ public class InitDb {
     }
 
     public static String passwordGenerator(){
-
         List<String> capitalLetters = List.of("A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z");
         List<String> symbols = List.of("#", "&", "!", "@", "%", "$", "{", "}", "n", "(", ")", "?", ":", "+", "-", "/", "*", "_", "|", "^", ",", ";", "~", "'");
         List<String> numbers = List.of("0", "1", "2", "3", "4", "5", "6", "7", "8", "9");
-        return "";
 
+        int minLength = 8;
+        StringBuilder stringBuilder = new StringBuilder();
+
+        for (int i = 0; i < minLength/4; i++) {
+            stringBuilder.append(getRandomFromList(capitalLetters));
+            stringBuilder.append(getRandomFromList(symbols));
+            stringBuilder.append(getRandomFromList(numbers));
+            stringBuilder.append(getRandomFromList(capitalLetters).toLowerCase());
+        }
+        //shuffle:
+
+        String temporaryPassword = stringBuilder.toString();
+
+        //System.out.println(stringBuilder.toString().length());
+        return shuffleString(temporaryPassword);
+    }
+
+    public static String shuffleString(String input){
+        List<String> letters = Arrays.asList(input.split(""));
+        Collections.shuffle(letters);
+        return StringUtils.join(letters,"");
     }
 
 }

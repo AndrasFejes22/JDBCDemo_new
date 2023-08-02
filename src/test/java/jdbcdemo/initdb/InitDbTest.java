@@ -43,4 +43,9 @@ class InitDbTest {
     void emailCorrectorTest() {
         assertEquals("aeuo", InitDb.removeAccentsWithApacheCommons("αιόσ"));
     }
+
+    @Test
+    void passwordGeneratorTest() {
+        System.out.println(InitDb.passwordGenerator());
+    }
 }
