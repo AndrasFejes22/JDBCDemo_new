@@ -25,7 +25,7 @@ import java.util.stream.Stream;
  */
 public class InitDb {
 
-    private final boolean TRUNCATE_TABLES = false;
+    private final boolean TRUNCATE_TABLES = true;
     private final Random random = new Random(8735432L);
     public static void main(String[] args) {
         new InitDb().run();
@@ -35,7 +35,7 @@ public class InitDb {
         try (Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5433/webshop", "postgres", "admin")) {
             truncateTablesIfNecessary(connection);
             populateCustomerTable(connection, 20);
-            populateProductTable(connection, 20);
+            //populateProductTable(connection, 20);
         } catch (SQLException e) {
             System.out.println("Error while uploading the database!");
             e.printStackTrace();
@@ -78,7 +78,7 @@ public class InitDb {
         for (int i = 0; i < amount; i++) {
             String firstName = getRandomFrom(firstNames);
             String lastName = getRandomFrom(lastNames);
-            String email = firstName.toLowerCase() + "." + lastName.toLowerCase() + "@gmail.com";
+            String email = removeAccentsWithApacheCommons(firstName.toLowerCase()) + "." + removeAccentsWithApacheCommons(lastName.toLowerCase()) + "@gmail.com";
             String password = "abc123"; // passwordGenerator();
             LocalDate dateOfBirth = dateOfBirthGenerator();
             boolean active = random.nextBoolean();
@@ -142,6 +142,15 @@ public class InitDb {
 
     static String removeAccentsWithApacheCommons(String input) {
         return StringUtils.stripAccents(input);
+    }
+
+    public static String passwordGenerator(){
+
+        List<String> capitalLetters = List.of("A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z");
+        List<String> symbols = List.of("#", "&", "!", "@", "%", "$", "{", "}", "n", "(", ")", "?", ":", "+", "-", "/", "*", "_", "|", "^", ",", ";", "~", "'");
+        List<String> numbers = List.of("0", "1", "2", "3", "4", "5", "6", "7", "8", "9");
+        return "";
+
     }
 
 }
