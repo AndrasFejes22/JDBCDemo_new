@@ -4,6 +4,8 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.text.Normalizer;
+
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -35,5 +37,10 @@ class InitDbTest {
     @Test
     void dateOfBirthGeneratorTest() {
         System.out.println(InitDb.dateOfBirthGenerator());
+    }
+
+    @Test
+    void emailCorrectorTest() {
+        assertEquals("aeuo", InitDb.removeAccentsWithApacheCommons("αιόσ"));
     }
 }

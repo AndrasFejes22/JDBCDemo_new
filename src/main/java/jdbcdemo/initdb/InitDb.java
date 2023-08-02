@@ -1,5 +1,6 @@
 package jdbcdemo.initdb;
 
+import org.apache.commons.lang3.StringUtils;
 import pojo.Customer;
 
 import java.io.IOException;
@@ -12,6 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Stream;
+
+
 
 /**
  * Write a Java program that randomly fills the tables of the "webshop" database with sample data.
@@ -32,6 +35,7 @@ public class InitDb {
         try (Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5433/webshop", "postgres", "admin")) {
             truncateTablesIfNecessary(connection);
             populateCustomerTable(connection, 20);
+            populateProductTable(connection, 20);
         } catch (SQLException e) {
             System.out.println("Error while uploading the database!");
             e.printStackTrace();
@@ -42,6 +46,8 @@ public class InitDb {
         System.out.println("The programme has been run.");
     }
 
+
+
     private void truncateTablesIfNecessary(Connection connection) throws SQLException {
         if(TRUNCATE_TABLES){
             try(Statement truncateStatement = connection.createStatement()){
@@ -50,6 +56,10 @@ public class InitDb {
                 truncateStatement.executeUpdate("TRUNCATE table orders CASCADE"); //public.order
             }
         }
+    }
+
+    private void populateProductTable(Connection connection, int amount) {
+
     }
 
     private void populateCustomerTable(Connection connection, int amount) throws IOException, SQLException {
@@ -129,4 +139,9 @@ public class InitDb {
         String date = String.valueOf(year) + "-" + String.valueOf(monthString) + "-" + String.valueOf(dayString);
         return LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
     }
+
+    static String removeAccentsWithApacheCommons(String input) {
+        return StringUtils.stripAccents(input);
+    }
+
 }
