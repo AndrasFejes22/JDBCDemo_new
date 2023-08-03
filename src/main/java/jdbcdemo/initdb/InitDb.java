@@ -63,7 +63,6 @@ public class InitDb {
 
     private void populateProductTable(Connection connection) throws IOException, SQLException {
         List<Product> productList = new ArrayList<>();
-        List<String[]> lines = new ArrayList<>();
         File file = new File("src/main/resources/PCParts.txt");
         FileReader fr = new FileReader(file);
         BufferedReader br = new BufferedReader(fr);
