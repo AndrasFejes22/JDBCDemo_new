@@ -2,6 +2,7 @@ package jdbcdemo.initdb;
 
 import org.apache.commons.lang3.StringUtils;
 import pojo.Customer;
+import pojo.Order;
 import pojo.Product;
 
 import java.io.BufferedReader;
@@ -29,16 +30,18 @@ import java.util.stream.Stream;
 public class InitDb {
 
     private final boolean TRUNCATE_TABLES = true;
-    private final static Random random = new Random(8735432L);
+    //private final static Random random = new Random(8735432L);
+    private final static Random random = new Random();
     public static void main(String[] args) {
         new InitDb().run();
     }
 
     private void run() {
         try (Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5433/webshop", "postgres", "admin")) {
-            //truncateTablesIfNecessary(connection);
-            //populateCustomerTable(connection, 20);
+            truncateTablesIfNecessary(connection);
+            populateCustomerTable(connection, 20);
             populateProductTable(connection);
+            populateOrdersTable(connection, 20);
         } catch (SQLException e) {
             System.out.println("Error while uploading the database!");
             e.printStackTrace();
@@ -49,6 +52,63 @@ public class InitDb {
         System.out.println("The programme has been run.");
     }
 
+    private void populateOrdersTable(Connection connection, int amount) throws SQLException {
+        // IDs:
+        List<Integer> customerIds = loadCustomerIds(connection);
+        List<Integer> productIds = loadProductIds(connection);
+
+        // create Customer objects
+        List<Order> orderList = new ArrayList<>();
+        for (int i = 0; i < amount; i++) {
+            orderList.add(new Order(0, getRandomFrom(customerIds), getRandomFrom(productIds)));
+        }
+
+        // populate the database
+        // INSERT sql:
+        String sql = """
+                        INSERT INTO public.orders(
+                        	order_id, customer_id, product_id)
+                        	VALUES (nextval('orders_seq'), ?, ?);
+                        """;
+        try(PreparedStatement preparedStatement = connection.prepareStatement(sql)){
+            for (Order order : orderList) {
+                preparedStatement.setInt(1, order.getCustomerId());
+                preparedStatement.setInt(2, order.getProductId());
+
+
+                preparedStatement.executeUpdate();
+            }
+        }
+
+    }
+
+    private List<Integer> loadCustomerIds(Connection connection) throws SQLException {
+        List<Integer> customerIds = new ArrayList<>();
+        String sql = "SELECT customer_id FROM customer";
+        try(PreparedStatement preparedStatement = connection.prepareStatement(sql)){
+            try (ResultSet resultSet = preparedStatement.executeQuery()){
+                while (resultSet.next()){
+                    int customerId = resultSet.getInt("customer_id");
+                    customerIds.add(customerId);
+                }
+            }
+        }
+        return customerIds;
+    }
+
+    private List<Integer> loadProductIds(Connection connection) throws SQLException{
+        List<Integer> productIds = new ArrayList<>();
+        String sql = "SELECT product_id FROM product";
+        try(PreparedStatement preparedStatement = connection.prepareStatement(sql)){
+            try (ResultSet resultSet = preparedStatement.executeQuery()){
+                while (resultSet.next()){
+                    int productId = resultSet.getInt("product_id");
+                    productIds.add(productId);
+                }
+            }
+        }
+        return productIds;
+    }
 
 
     private void truncateTablesIfNecessary(Connection connection) throws SQLException {
@@ -109,13 +169,14 @@ public class InitDb {
         List<String> cities = Files.lines(Paths.get("src/main/resources/varosok.txt")).toList();
         List<String> streetTypes = Files.lines(Paths.get("src/main/resources/utcanevek.txt")).toList();
         List<String> namesOfFamousPeople = Files.lines(Paths.get("src/main/resources/hires_emberek.txt")).toList();
+        List<String> mailProviders = Files.lines(Paths.get("src/main/resources/mailProviders.txt")).toList();
 
         // create Customer objects
         List<Customer> customerList = new ArrayList<>();
         for (int i = 0; i < amount; i++) {
             String firstName = getRandomFrom(firstNames);
             String lastName = getRandomFrom(lastNames);
-            String email = removeAccentsWithApacheCommons(firstName.toLowerCase()) + "." + removeAccentsWithApacheCommons(lastName.toLowerCase()) + "@gmail.com";
+            String email = removeAccentsWithApacheCommons(firstName.toLowerCase()) + "." + removeAccentsWithApacheCommons(lastName.toLowerCase()) + getRandomFrom(mailProviders);
             String password = passwordGenerator();
             LocalDate dateOfBirth = dateOfBirthGenerator();
             boolean active = random.nextBoolean();
@@ -156,7 +217,7 @@ public class InitDb {
         return Stream.of(list1, list2).flatMap(l -> l.stream()).toList();
     }
 
-    public static String getRandomFrom(List<String> list){
+    public static <T> T getRandomFrom(List<T> list){
         return list.get(random.nextInt(list.size()));
     }
 
