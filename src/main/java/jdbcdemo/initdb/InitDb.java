@@ -2,7 +2,11 @@ package jdbcdemo.initdb;
 
 import org.apache.commons.lang3.StringUtils;
 import pojo.Customer;
+import pojo.Product;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -32,9 +36,9 @@ public class InitDb {
 
     private void run() {
         try (Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5433/webshop", "postgres", "admin")) {
-            truncateTablesIfNecessary(connection);
-            populateCustomerTable(connection, 20);
-            //populateProductTable(connection, 20);
+            //truncateTablesIfNecessary(connection);
+            //populateCustomerTable(connection, 20);
+            populateProductTable(connection);
         } catch (SQLException e) {
             System.out.println("Error while uploading the database!");
             e.printStackTrace();
@@ -57,7 +61,42 @@ public class InitDb {
         }
     }
 
-    private void populateProductTable(Connection connection, int amount) {
+    private void populateProductTable(Connection connection) throws IOException, SQLException {
+        List<Product> productList = new ArrayList<>();
+        List<String[]> lines = new ArrayList<>();
+        File file = new File("src/main/resources/PCParts.txt");
+        FileReader fr = new FileReader(file);
+        BufferedReader br = new BufferedReader(fr);
+        String line;
+        while((line = br.readLine()) != null){
+            String[] arr = line.split(" ");
+            String name = arr[0];
+            String description = arr[0];
+            int unit_price = Integer.parseInt(arr[1]);
+            int stock_quantity = random.nextInt(50);
+            Product product = new Product(0, name, description, unit_price, stock_quantity);
+            productList.add(product);
+
+        }
+        //System.out.println(productList); // check
+
+        // populate the database
+        // INSERT sql:
+        String sql = """
+                        INSERT INTO public.product(
+                        	product_id, name, description, unit_price, stock_quantity)
+                        	VALUES (nextval('product_seq'), ?, ?, ?, ?);
+                        """;
+        try(PreparedStatement preparedStatement = connection.prepareStatement(sql)){
+            for (Product product : productList) {
+                preparedStatement.setString(1, product.getName());
+                preparedStatement.setString(2, product.getDescription());
+                preparedStatement.setInt(3, product.getUnitPrice());
+                preparedStatement.setInt(4, product.getQuantity());
+
+                preparedStatement.executeUpdate();
+            }
+        }
 
     }
 
@@ -90,7 +129,8 @@ public class InitDb {
             customerList.add(customer);
         }
         System.out.println("Customers list: ");
-        //customerList.forEach(System.out::println);
+        //customerList.forEach(System.out::println); // check
+
         // populate the database
         // INSERT sql:
         String sql = """

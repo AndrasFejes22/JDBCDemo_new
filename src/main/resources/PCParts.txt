@@ -1,12 +1,13 @@
-Monitor
-CPU cabinet
-Motherboard
-Processor
-GPU
-Cooling fans
-RAM
-Hard disk
-SMPS
-Connecting cables and
-Keyboard and Mouse
-Speakers
+Monitor 1000
+CPU_cabinet 2000
+Motherboard 6000
+Processor 50000
+GPU 100000
+Cooling_fan 25000
+RAM 20000
+Hard_disk 70000
+SMPS 45000
+Connecting_cables 3000
+Keyboard 32000
+Mouse 10000
+Speaker 6700
