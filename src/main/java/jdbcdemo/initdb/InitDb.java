@@ -35,10 +35,12 @@ public class InitDb {
     private final static Random random = new Random();
     public static void main(String[] args) {
         Crud crud = new Crud();
-        Customer customer = new Customer(0, "Teszt", "Elek", "telek@gmail.com","abc123", LocalDate.now(), true, "Kecskemet");
+        Customer customer = new Customer(0, "Gipsz", "Jakab", "gjakab@gmail.com",passwordGenerator(), dateOfBirthGenerator(), true, "Kecskemet");
 
         try (Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5433/webshop", "postgres", "admin")) {
            crud.insertPerson(connection, customer);
+           crud.select(connection, "Elek");
+           crud.select(connection, "Jakab");
         } catch (SQLException e) {
             System.out.println("Error while connecting the database!");
             e.printStackTrace();
