@@ -229,7 +229,7 @@ public class InitDb {
     public static LocalDate dateOfBirthGenerator(){
         Random myRandom = new Random();
         String nullNumber = "0";
-        int year = myRandom.nextInt(1900, LocalDate.now().getYear()-18);
+        int year = myRandom.nextInt(1930, LocalDate.now().getYear()-18);
         int month = myRandom.nextInt(12) + 1;
         String monthString = String.valueOf(month);
         if(monthString.length() == 1){
