@@ -1,5 +1,6 @@
 package jdbcdemo.initdb;
 
+import crud.Crud;
 import org.apache.commons.lang3.StringUtils;
 import pojo.Customer;
 import pojo.Order;
@@ -33,7 +34,18 @@ public class InitDb {
     //private final static Random random = new Random(8735432L);
     private final static Random random = new Random();
     public static void main(String[] args) {
-        new InitDb().run();
+        Crud crud = new Crud();
+        Customer customer = new Customer(0, "Teszt", "Elek", "telek@gmail.com","abc123", LocalDate.now(), true, "Kecskemet");
+
+        try (Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5433/webshop", "postgres", "admin")) {
+           crud.insertPerson(connection, customer);
+        } catch (SQLException e) {
+            System.out.println("Error while connecting the database!");
+            e.printStackTrace();
+        }
+        System.out.println("The programme has been run.");
+
+        //new InitDb().run();
     }
 
     private void run() {
