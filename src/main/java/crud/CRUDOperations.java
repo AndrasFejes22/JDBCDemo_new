@@ -4,8 +4,12 @@ import pojo.Customer;
 
 import java.sql.*;
 import java.time.LocalDate;
+import java.util.Scanner;
 
-public class Crud {
+public class CRUDOperations {
+
+    private Scanner scanner = new Scanner(System.in);
+
 
     //INSERT
     public void insertPerson (Connection connection, Customer customer) {
@@ -39,7 +43,7 @@ public class Crud {
     }
 
     //SELECT
-    //Sql injection?
+
     public void select (Connection c, String text) throws SQLException {
 
         String query2 = "select * \r\n"
@@ -85,4 +89,39 @@ public class Crud {
             e.printStackTrace();
         }
     }
+
+    //DELETE
+    //public void deleteCustomer (Connection connection) {
+    public void deleteCustomer (Connection connection, String text) {
+        //String deletedCustomer = "DELETE from customer WHERE first_name =? or  last_name =?";
+        String deletedCustomer = "DELETE from customer WHERE first_name =?";
+
+        try(PreparedStatement statement = connection.prepareStatement(deletedCustomer)){
+
+            //System.out.print("first_name or last_name?: ");
+            //String input = scanner.nextLine();
+
+            statement.setString(1, text);
+            //statement.setString(2, input);
+
+            int changedRows = statement.executeUpdate();
+            System.out.println("Deleted rows: " + changedRows);
+            if(changedRows !=0){
+                System.out.println("Customer table recreated");
+                System.out.println("Customer '" + text + "' has been deleted from database!");
+            } else {
+                System.out.println("Customer '" + text + "' has not been deleted from database, or does not exist!");
+            }
+
+
+        }catch(SQLException e) {
+            System.err.println("Error occurred when executing SQL statement");
+            System.err.println("Error code: " + e.getErrorCode());
+            System.err.println("Message: " + e.getMessage());
+            System.err.println("State: " + e.getSQLState());
+            //System.err.println("State: " + e.getLocalizedMessage());
+        }
+    }
+
+
 }
