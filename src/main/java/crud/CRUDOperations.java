@@ -92,8 +92,9 @@ public class CRUDOperations {
 
     //DELETE
     //public void deleteCustomer (Connection connection) {
-    public void deleteCustomer (Connection connection, String text) {
+    public void deleteCustomer (Connection connection, String text) throws SQLException {
         //String deletedCustomer = "DELETE from customer WHERE first_name =? or  last_name =?";
+        System.out.println("Autocommit: " + connection.getAutoCommit());
         String deletedCustomer = "DELETE from customer WHERE first_name =?";
 
         try(PreparedStatement statement = connection.prepareStatement(deletedCustomer)){
@@ -105,12 +106,14 @@ public class CRUDOperations {
             //statement.setString(2, input);
 
             int changedRows = statement.executeUpdate();
-            System.out.println("Deleted rows: " + changedRows);
+
             if(changedRows !=0){
                 System.out.println("Customer table recreated");
                 System.out.println("Customer '" + text + "' has been deleted from database!");
+                System.out.println("Deleted rows: " + changedRows);
             } else {
                 System.out.println("Customer '" + text + "' has not been deleted from database, or does not exist!");
+                System.out.println("Deleted rows: " + changedRows);
             }
 
 
@@ -122,6 +125,8 @@ public class CRUDOperations {
             //System.err.println("State: " + e.getLocalizedMessage());
         }
     }
+
+    // update--> transaction (ellenőzés select-tel leellenőrizni hogy az történt e amit szerettünk volna, majd kiadni a commit parancsot)
 
 
 }

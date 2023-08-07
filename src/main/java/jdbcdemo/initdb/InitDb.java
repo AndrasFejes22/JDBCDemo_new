@@ -39,7 +39,7 @@ public class InitDb {
 
         try (Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5433/webshop", "postgres", "admin")) {
             //crudOperations.insertPerson(connection, customer);
-            crudOperations.select(connection, "123");
+            //crudOperations.select(connection, "123");
             //crudOperations.select(connection, "Jakab");
             crudOperations.deleteCustomer(connection, "012");
         } catch (SQLException e) {
