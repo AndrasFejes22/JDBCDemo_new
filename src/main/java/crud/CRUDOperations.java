@@ -93,6 +93,7 @@ public class CRUDOperations {
     //DELETE
     //public void deleteCustomer (Connection connection) {
     public void deleteCustomer (Connection connection, String text) throws SQLException {
+        connection.setAutoCommit(false);
         //String deletedCustomer = "DELETE from customer WHERE first_name =? or  last_name =?";
         System.out.println("Autocommit: " + connection.getAutoCommit());
         String deletedCustomer = "DELETE from customer WHERE first_name =?";
@@ -111,17 +112,21 @@ public class CRUDOperations {
                 System.out.println("Customer table recreated");
                 System.out.println("Customer '" + text + "' has been deleted from database!");
                 System.out.println("Deleted rows: " + changedRows);
+                connection.commit();
             } else {
                 System.out.println("Customer '" + text + "' has not been deleted from database, or does not exist!");
                 System.out.println("Deleted rows: " + changedRows);
+                connection.rollback();
             }
 
 
         }catch(SQLException e) {
+            connection.rollback();
             System.err.println("Error occurred when executing SQL statement");
             System.err.println("Error code: " + e.getErrorCode());
             System.err.println("Message: " + e.getMessage());
             System.err.println("State: " + e.getSQLState());
+
             //System.err.println("State: " + e.getLocalizedMessage());
         }
     }

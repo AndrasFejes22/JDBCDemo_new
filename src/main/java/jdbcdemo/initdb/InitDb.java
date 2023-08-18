@@ -41,7 +41,7 @@ public class InitDb {
             //crudOperations.insertPerson(connection, customer);
             //crudOperations.select(connection, "123");
             //crudOperations.select(connection, "Jakab");
-            crudOperations.deleteCustomer(connection, "012");
+            crudOperations.deleteCustomer(connection, "Gipsz");
         } catch (SQLException e) {
             System.out.println("Error while connecting the database!");
             e.printStackTrace();
